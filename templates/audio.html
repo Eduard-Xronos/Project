@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>аудио {{ book }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* CSS для установки фона */
+        body {
+            background-image: url("{{ url_for('static', filename='fon.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Чтобы скрыть картинки, выходящие за пределы экрана */
+            position: relative; /* Устанавливаем положение относительно страницы */
+            display: flex; /* Добавляем flex-контейнер для центрирования по вертикали и горизонтали */
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center; /* Центрируем по вертикали */
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 150px; /* Добавляем отступ снизу */
+            position: relative; /* Устанавливаем положение относительно контейнера */
+            z-index: 1; /* Помещаем контент поверх падающих изображений */
+        }
+        p {
+            font-size: 18px; /* Увеличиваем размер текста */
+            line-height: 1.6; /* Устанавливаем высоту строки */
+            padding: 20px; /* Добавляем отступ от края */
+        }
+        .video-container {
+            position: relative;
+            width: 50%; /* Устанавливаем ширину контейнера */
+            padding-bottom: 40.25%; /* Устанавливаем соотношение сторон для видео 16:9 (высота / ширина * 100%) */
+            margin-bottom: 50px; /* Добавляем отступ снизу */
+            margin-top: 50px; /* Добавляем отступ сверху */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Занимает всю ширину контейнера */
+            height: 100%; /* Занимает всю высоту контейнера */
+        }
+                .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 999; /* Помещаем кнопку поверх других элементов */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{{ url_for('book_page', book_id=book_name) }}"><button><--- Назад</button></a>
+        </div>
+    <div class="content">
+        <p>{{ content }}</p>
+    </div>
+    <div class="video-container">
+        <!-- YouTube видео -->
+        <iframe src="{{ book }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="user-info">
+        {% if 'username' in session %}
+            <p>Вы вошли как: {{ session['username'] }}</p>
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Вход</a> | <a href="{{ url_for('register') }}">Регистрация</a>
+        {% endif %}
+    </div>
+</body>
+</html>

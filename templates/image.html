@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Картинки по произведению "{{ name }}"</title>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='fon.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-item {
+            position: relative;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-title {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+                        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 999; /* Помещаем кнопку поверх других элементов */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{{ url_for('book_page', book_id=book) }}"><button><--- Назад</button></a>
+        </div>
+    <div class="content">
+        <h1>Иллюстрации к произведению "{{ name }}"</h1>
+        <h1>Иллюстрации художника {{ avtor }}</h1>
+        <div class="image-grid">
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/1.jpg') }}" alt="Картинка 1" data-large-image-id="largeImage1">
+                <div class="image-title">{{ n[0] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/2.jpg') }}" alt="Картинка 2" data-large-image-id="largeImage2">
+                <div class="image-title">{{ n[1] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/3.jpg') }}" alt="Картинка 3" data-large-image-id="largeImage3">
+                <div class="image-title">{{ n[2] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/4.jpg') }}" alt="Картинка 4" data-large-image-id="largeImage4">
+                <div class="image-title">{{ n[3] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/5.jpg') }}" alt="Картинка 5" data-large-image-id="largeImage5">
+                <div class="image-title">{{ n[4] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/6.jpg') }}" alt="Картинка 6" data-large-image-id="largeImage6">
+                <div class="image-title">{{ n[5] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/7.jpg') }}" alt="Картинка 7" data-large-image-id="largeImage7">
+                <div class="image-title">{{ n[6] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/8.jpg') }}" alt="Картинка 8" data-large-image-id="largeImage8">
+                <div class="image-title">{{ n[7] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/9.jpg') }}" alt="Картинка 9" data-large-image-id="largeImage9">
+                <div class="image-title">{{ n[8] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/10.jpg') }}" alt="Картинка 10" data-large-image-id="largeImage10">
+                <div class="image-title">{{ n[9] }}</div>
+            </div>
+            <div class="image-item">
+                <img class="thumbnail" src="{{ url_for('static', filename='data/Image/' + page + '/11.jpg') }}" alt="Картинка 11" data-large-image-id="largeImage11">
+                <div class="image-title">{{ n[10] }}</div>
+            </div>
+        </div>
+
+        <!-- Большие версии изображений -->
+        <img id="largeImage1" src="{{ url_for('static', filename='data/Image/' + page + '/1.jpg') }}" alt="Картинка 1">
+        <img id="largeImage2" src="{{ url_for('static', filename='data/Image/' + page + '/2.jpg') }}" alt="Картинка 2">
+        <img id="largeImage3" src="{{ url_for('static', filename='data/Image/' + page + '/3.jpg') }}" alt="Картинка 3">
+        <img id="largeImage4" src="{{ url_for('static', filename='data/Image/' + page + '/4.jpg') }}" alt="Картинка 4">
+        <img id="largeImage5" src="{{ url_for('static', filename='data/Image/' + page + '/5.jpg') }}" alt="Картинка 5">
+        <img id="largeImage6" src="{{ url_for('static', filename='data/Image/' + page + '/6.jpg') }}" alt="Картинка 6">
+        <img id="largeImage7" src="{{ url_for('static', filename='data/Image/' + page + '/7.jpg') }}" alt="Картинка 7">
+        <img id="largeImage8" src="{{ url_for('static', filename='data/Image/' + page + '/8.jpg') }}" alt="Картинка 8">
+        <img id="largeImage9" src="{{ url_for('static', filename='data/Image/' + page + '/9.jpg') }}" alt="Картинка 9">
+        <img id="largeImage10" src="{{ url_for('static', filename='data/Image/' + page + '/10.jpg') }}" alt="Картинка 10">
+        <img id="largeImage11" src="{{ url_for('static', filename='data/Image/' + page + '/11.jpg') }}" alt="Картинка 11">
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var thumbnails = document.querySelectorAll(".thumbnail");
+            thumbnails.forEach(function(thumbnail) {
+                thumbnail.addEventListener("click", function() {
+                    var largeImageId = this.getAttribute("data-large-image-id");
+                    var largeImage = document.getElementById(largeImageId);
+                    largeImage.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

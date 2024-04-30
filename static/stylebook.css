@@ -1,0 +1,65 @@
+/* Стили для кнопок */
+.center-button {
+    width: 150px;
+    height: 150px;
+    background-color: #7c0303; /* Цвет основной кнопки (жёлтый) */
+    border: none;
+    border-radius: 50%; /* Делаем основную кнопку круглой */
+    font-size: 16px;
+    color: white;
+    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+        .button:hover {
+            background-color: #3d0000;
+        }
+
+.flower-button {
+    width: 100px;
+    height: 100px;
+    background-color: #7c0303; /* Цвет кнопок вокруг основной кнопки (синий) */
+    border: none;
+    border-radius: 50%; /* Делаем кнопки вокруг круглыми */
+    font-size: 14px;
+    color: white;
+    position: absolute;
+}
+
+/* Дополнительные стили для выравнивания */
+.flower {
+    position: relative;
+    width: 450px; /* Ширина контейнера равна сумме ширин основной кнопки и двух кнопок вокруг неё */
+    height: 450px; /* Высота контейнера равна сумме высот основной кнопки и двух кнопок вокруг неё */
+    margin: auto;
+    display: flex;
+    background-color: #7c0303
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Добавляем скрытие содержимого, которое выходит за пределы контейнера */
+}
+        .user-info {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+        }
+        .falling-images {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none; /* Чтобы падающие изображения не взаимодействовали с мышью */
+            z-index: -1; /* Помещаем контейнер под основным контентом */
+        }
+        .falling-image {
+            position: absolute;
+            width: 200px; /* Изменяем ширину изображения */
+            height: 200px; /* Изменяем высоту изображения */
+            background-size: cover;
+            background-position: center;
+            animation: fall linear infinite;
+        }

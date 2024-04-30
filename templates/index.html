@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* CSS для установки фона */
+        body {
+            background-image: url("{{ url_for('static', filename='fon.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Чтобы скрыть картинки, выходящие за пределы экрана */
+            position: relative; /* Устанавливаем положение относительно страницы */
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 150px; /* Добавляем отступ снизу */
+            position: relative; /* Устанавливаем положение относительно контейнера */
+            z-index: 1; /* Помещаем контент поверх падающих изображений */
+        }
+        .button-container {
+            margin-bottom: 20px;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            color: white;
+            width: calc(100% - 50px); /* Ширина контента минус внешний отступ */
+            height: calc(100% - 300px); /* Высота контента минус внешний отступ */
+        }
+        .falling-images {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none; /* Чтобы падающие изображения не взаимодействовали с мышью */
+            z-index: -1; /* Помещаем контейнер под основным контентом */
+        }
+        .falling-image {
+            position: absolute;
+            width: 200px; /* Изменяем ширину изображения */
+            height: 200px; /* Изменяем высоту изображения */
+            background-size: cover;
+            background-position: center;
+            animation: fall linear infinite;
+        }
+        /* Анимация падения */
+        @keyframes fall {
+            from { top: -200px; }
+            to { top: 110%; }
+        }
+        /* Затемнение вокруг текста */
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 5;
+            left: 0;
+            width: calc(100% - 0px); /* Ширина контента минус внешний отступ */
+            height: calc(100% - 20px); /* Высота контента минус внешний отступ */
+            background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный цвет */
+            z-index: -1; /* Помещаем затемнение под текстом */
+            border-radius: 10px; /* Для закругленных краев */
+            padding: 20px; /* Внешний отступ для затемнения */
+            box-sizing: border-box; /* Учитываем внутренние отступы в расчетах размера */
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Литературный сборник произведений</h1>
+        <div class="rules-container">
+            {% for rule in rules %}
+                <p>{{ rule }}</p>
+            {% endfor %}
+        </div>
+        <h2>Выберите класс:</h2>
+    </div>
+    <div class="button-container">
+        <a href="{{ url_for('class_page', class_name='8') }}"><button class="button">8 класс</button></a>
+        <a href="{{ url_for('class_page', class_name='9') }}"><button class="button">9 класс</button></a>
+        <a href="{{ url_for('class_page', class_name='10') }}"><button class="button">10 класс</button></a>
+    </div>
+    <div class="user-info">
+        {% if 'username' in session %}
+            <p>Вы вошли как: {{ session['username'] }}</p>
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Вход</a> | <a href="{{ url_for('register') }}">Регистрация</a>
+        {% endif %}
+    </div>
+    <div class="falling-images" id="falling-images"></div>
+    <script>
+        var images = [
+            "{{ url_for('static', filename='image_plus/coreta.jpg') }}",
+            "{{ url_for('static', filename='image_plus/piston.jpg') }}",
+            "{{ url_for('static', filename='image_plus/book.jpg') }}",
+            "{{ url_for('static', filename='image_plus/palka.jpg') }}",
+            "{{ url_for('static', filename='image_plus/cheast.jpg') }}"
+        ];
+
+        var maxItems = 20; // Максимальное количество падающих предметов
+
+        function createFallingImage() {
+            var fallingImagesContainer = document.getElementById('falling-images');
+            // Если количество падающих предметов достигло максимума, удаляем старые
+            if (fallingImagesContainer.children.length >= maxItems) {
+                fallingImagesContainer.removeChild(fallingImagesContainer.firstChild);
+            }
+            var imgSrc = images[Math.floor(Math.random() * images.length)];
+            var img = document.createElement('div');
+            img.className = 'falling-image';
+            img.style.backgroundImage = 'url(' + imgSrc + ')';
+            img.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+            img.style.animationDuration = (Math.random() * 5 + 1) + 's';
+            fallingImagesContainer.appendChild(img);
+        }
+
+        setInterval(createFallingImage, 1000);
+    </script>
+</body>
+</html>

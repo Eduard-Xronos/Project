@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Критика {{ book }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* CSS для установки фона */
+        body {
+            background-image: url("{{ url_for('static', filename='fon.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Чтобы скрыть картинки, выходящие за пределы экрана */
+            position: relative; /* Устанавливаем положение относительно страницы */
+            display: flex; /* Добавляем flex-контейнер для центрирования по вертикали и горизонтали */
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center; /* Центрируем по вертикали */
+        }
+.content {
+    padding: 0px;
+    text-align: center;
+    color: white;
+    margin-bottom: 10px; /* Добавляем отступ снизу */
+    position: relative; /* Устанавливаем положение относительно контейнера */
+    z-index: 1; /* Помещаем контент поверх падающих изображений */
+    overflow-y: auto; /* Добавляем вертикальную прокрутку, если контент выходит за пределы контейнера */
+    max-height: calc(100vh - 50px); /* Ограничиваем высоту контейнера до высоты экрана минус отступы */
+}
+        .text-container {
+            background-color: rgba(0, 0, 0, 0.5); /* Затемнение */
+            border-radius: 10px;
+            margin-bottom: 20px; /* Отступ между блоками */
+            padding: 20px; /* Добавлено для внутреннего отступа текста */
+            overflow: hidden; /* Добавлено для избежания пустой рамки затемнения */
+            display: flex; /* Добавляем flex-контейнер для расположения текста и видео рядом */
+            align-items: center; /* Выравниваем элементы по вертикали */
+        }
+        p {
+            font-size: 18px; /* Увеличиваем размер текста */
+            line-height: 1.6; /* Устанавливаем высоту строки */
+            color: white; /* Цвет текста */
+            margin: 0; /* Убираем внешние отступы */
+            flex: 1; /* Делаем текстовый блок растяжимым, чтобы он занимал всю доступную ширину */
+        }
+        .video-container {
+            width: 800px; /* Увеличиваем ширину контейнера для видео */
+            height: 450px; /* Увеличиваем высоту контейнера для видео (16:9 соотношение сторон) */
+            margin-left: 20px; /* Оставляем отступ слева для разделения текста и видео */
+        }
+        .video-container iframe {
+            width: 100%; /* Занимает всю ширину контейнера */
+            height: 100%; /* Занимает всю высоту контейнера */
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 999; /* Помещаем кнопку поверх других элементов */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{{ url_for('book_page', book_id=book_name) }}"><button><--- Назад</button></a>
+    </div>
+    <div class="content">
+        {% for line in content.split('\n') %}
+            <div class="text-container">
+                <p>{{ line | safe }}</p>
+                <div class="video-container">
+                    <iframe width="1000" height="750" src="{{ silks[loop.index0] }}" title="Горе от ума (1952) фильм смотреть онлайн" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="user-info">
+        {% if 'username' in session %}
+            <p>Вы вошли как: {{ session['username'] }}</p>
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Вход</a> | <a href="{{ url_for('register') }}">Регистрация</a>
+        {% endif %}
+    </div>
+</body>
+</html>

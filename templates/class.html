@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Класс {{ session['class_name'] }}!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleClass.css') }}">
+    <style>
+        /* CSS для установки фона */
+        body {
+            background-image: url("{{ url_for('static', filename='fon.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            background-image: url("{{ url_for('static', filename='2fon.jpg') }}");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            padding: 0px; /* Настройте отступы вокруг содержимого */
+            text-align: center; /* Центрируем содержимое */
+            color: white; /* Цвет текста */
+            width: 67%; /* Ширина контейнера с содержимым */
+            height: 80%; /* Высота контейнера с содержимым */
+        }
+
+    .btn {
+        position: fixed;
+        top: 10px; /* Расстояние от верхнего края экрана */
+        left: 10px; /* Расстояние от левого края экрана */
+    }
+    </style>
+</head>
+<body>
+        <a href="{{ url_for('index') }}" class="btn"><button><--- Назад</button></a>
+    <div class="content">
+        <div class="rules-container">
+            {% for rule in rules %}
+                <p>{{ rule }}</p>
+            {% endfor %}
+        </div>
+        <!-- Кнопки входа и регистрации -->
+        <h1>Класс {{ session['class_name'] }}</h1>
+        <!-- Кнопка "На главную" -->
+
+        <div class="user-info">
+            {% if 'username' in session %}
+                <p>Вы вошли как: {{ session['username'] }}</p>
+                <a href="{{ url_for('logout') }}">Выйти</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Вход</a> | <a href="{{ url_for('register') }}">Регистрация</a>
+            {% endif %}
+        </div>
+
+        <!-- Кнопки произведений -->
+        <div class="books">
+            {% for book in books %}
+                <a href="{{ url_for('book_page', book_id=book[1])}}"><button>{{ book[1] }}</button></a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

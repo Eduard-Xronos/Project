@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book_id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylebook.css') }}">
+    <style>
+        /* CSS для установки фона */
+        .button:hover {
+            background-color: #3d0000;
+        }
+        body {
+            background-image: url("{{ url_for('static', filename='fon.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .content {
+            background-image: url("{{ url_for('static', filename='ramka.jpg') }}");
+            background-size: cover;
+            position: relative;
+            padding: 20px; /* Настройте отступы вокруг содержимого */
+            width: 930px; /* Ширина контейнера с содержимым */
+            height: 640px; /* Высота контейнера с содержимым */
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Стили для комментариев */
+        .comments {
+            margin-top: 20px;
+            padding: 10px;
+            width: 600px; /* Ширина области комментариев */
+            margin: auto;
+        }
+        .comment {
+            margin-bottom: 10px;
+        }
+        .comment p {
+            margin: 5px 0;
+        }
+        .comment .username {
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .username {
+        font-weight: bold;
+        }
+        .admin {
+        color: red;
+        font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="{{ url_for('class_page', class_name=class_id) }}"><button><--- Назад</button></a>
+        <div class="user-info">
+            {% if 'username' in session %}
+                <p>Вы вошли как: {{ session['username'] }}</p>
+                <a href="{{ url_for('logout') }}">Выйти</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Вход</a> | <a href="{{ url_for('register') }}">Регистрация</a>
+            {% endif %}
+        </div>
+        <div class="content">
+            <div class="flower">
+                <!-- Основная кнопка -->
+                <a href="{% if book_id == 'Горе от ума' %}https://ilibrary.ru/text/5/p.1/index.html{% elif book_id == 'Евгений Онегин' %}https://ilibrary.ru/text/436/p.2/index.html{% elif book_id == 'Ревизор' %}https://ilibrary.ru/text/473/p.1/index.html{% elif book_id == 'Обломов' %}https://ilibrary.ru/text/475/p.1/index.html{% endif %}">
+                    <button class="center-button">{{ book_id }}</button>
+                </a>
+
+                <!-- Кнопки вокруг основной кнопки -->
+                <a href="{{ url_for('kritic', book=book_id) }}"><button class="flower-button" style="top: 40px; left: 175px;">Критика</button></a>
+                <a href="{{ url_for('music', book=book_id) }}"><button class="flower-button" style="top: 40px; left: 310px;">Музыка</button></a>
+                <a href="{{ url_for('teatr', book=book_id) }}"><button class="flower-button" style="top: 40px; left: 40px;">Театр</button></a>
+                <a href="{{ url_for('image', book=book_id) }}"><button class="flower-button" style="top: 170px; left: 40px;">Иллюстрации</button></a>
+                <a href="{{ url_for('interesting', book=book_id) }}"><button class="flower-button" style="top: 170px; left: 310px;">интересные факты</button></a>
+                <a href="{{ url_for('vopros', book=book_id) }}"><button class="flower-button" style="top: 310px; left: 310px;">Что ещё можно почитать?</button></a>
+                <a href="{{ url_for('movie', book=book_id) }}"><button class="flower-button" style="top: 310px; left: 175px;">Кино</button></a>
+                <a href="{{ url_for('audio', book=book_id) }}"><button class="flower-button" style="top: 310px; left: 40px;">аудио</button></a>
+            </div>
+        </div>
+
+        <!-- Область комментариев -->
+        <div class="comments">
+            <h2>Комментарии:</h2>
+            <div id="comments-list">
+                <!-- Здесь будут отображаться комментарии -->
+            </div>
+            <!-- Форма для отправки комментария -->
+            {% if 'username' in session %}
+                <textarea id="comment-text" rows="4" placeholder="Напишите комментарий здесь..."></textarea>
+                <br>
+                <button onclick="submitComment('{{ session['username'] }}')">Отправить</button>
+            {% else %}
+                <p>Чтобы оставить комментарий, пожалуйста, <a href="{{ url_for('login') }}">войдите</a> или <a href="{{ url_for('register') }}">зарегистрируйтесь</a>.</p>
+            {% endif %}
+        </div>
+    </main>
+    <script>
+        // Функция для добавления комментария на страницу
+        function addComment(commentText, username) {
+            var comment = document.createElement('div');
+            comment.className = 'comment';
+            var p = document.createElement('p');
+            var usernameSpan = document.createElement('span');
+            usernameSpan.textContent = username;
+            usernameSpan.className = 'username'; // Добавляем класс для имени пользователя
+            p.appendChild(usernameSpan); // Добавляем элемент span с именем пользователя
+            p.innerHTML += ': ' + commentText; // Добавляем двоеточие и текст комментария
+            comment.appendChild(p);
+
+            // Добавление комментария к списку комментариев
+            var commentsList = document.getElementById('comments-list');
+            commentsList.appendChild(comment);
+        }
+
+        // Загрузка комментариев при загрузке страницы
+        window.onload = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Комментарии успешно загружены
+                        var response = JSON.parse(xhr.responseText);
+                        response.comments.forEach(function(commentText) {
+                            var parts = commentText.split(':');
+                            var username = parts[0].trim();
+                            var comment = parts.slice(1).join(':').trim();
+                            addComment(comment, username);
+                        });
+                    } else {
+                        // В случае ошибки выводим сообщение об ошибке
+                        alert('Произошла ошибка при загрузке комментариев.');
+                    }
+                }
+            };
+            xhr.open('GET', '/load_comments', true);
+            xhr.send();
+        };
+    </script>
+</body>
+</html>
